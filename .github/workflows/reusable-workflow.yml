@@ -7,6 +7,10 @@ on:
         description: 'A custom variable'
         required: true
         type: string
+    secrets:
+      my_secret:
+        description: 'A custom secret'
+        required: true
 
 jobs:
   build:
@@ -18,5 +22,5 @@ jobs:
     - name: Use the variable
       run: |
         echo "My variable: ${{ inputs.my_variable }}"
-        echo "Secret Value: ${{ secrets.SEC1 }}"
+        echo "Secret Value: ${{ secrets.my_secret }}"
 
