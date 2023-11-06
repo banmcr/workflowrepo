@@ -1,0 +1,26 @@
+name: Reusable Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    inputs:
+      my_variable:
+        description: 'A custom variable'
+        required: true
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: Use the variable
+      run: |
+        echo "My variable: ${{ inputs.my_variable }}"
+        echo "Secret Value: ${{ secrets.MY_SECRET }}"
+      env:
+        MY_SECRET: ${{ secrets.MY_SECRET }}
