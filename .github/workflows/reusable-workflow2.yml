@@ -1,0 +1,45 @@
+name: Resuable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        type: string
+      Region:
+        description: 'Region of deployment'
+        required: true
+        type: string
+    secrets:
+      CONNAPPCLIENTID:
+        description: 'CONNAPPCLIENTID ID'
+        required: true
+      CONNAPPCLIENTSECRET:
+        description: 'CONNAPPCLIENTSECRET ID'
+        required: true
+      CLIENTID:
+        description: 'CLIENTID ID'
+        required: true
+      CLIENTSECRET:
+        description: 'CLIENTSECRET ID'
+        required: true
+
+jobs:
+  install-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+ 
+
+      - name: Install Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Maven 3.8.6
+        run: npm install -g maven@5.0.0
+
+      - name: Run Maven
+        run: mvn clean deploy -DmuleDeploy -DconnectedAppClientId=${{ secrets.CONNAPPCLIENTID }} -DconnectedAppClientSecret=${{ secrets.CONNAPPCLIENTSECRET }} -Denvironment=${{ inputs.environment }} -Dworkers=1 -DworkerType=MICRO -Dmule.env=${{ inputs.environment }} -Danypoint.platform.client_id=${{ secrets.CLIENTID }} -Danypoint.platform.client_secret=${{ secrets.CLIENTSECRET }} -DapplicationName=pd-iewc-pim-sapi -Dregion=${{ inputs.Region }} -s .github/settings.xml
