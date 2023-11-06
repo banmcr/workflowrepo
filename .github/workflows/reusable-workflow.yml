@@ -8,7 +8,7 @@ on:
         required: true
         type: string
     secrets:
-      secret_input:
+      my_secret:
         description: 'A secret input'
         required: true
 
